@@ -22,6 +22,7 @@ const MainWrapper = styled.div`
 const HeaderContent = styled.div`
   margin:0 auto;
   font-weight: 3em;
+  height:175px;
 `;
 const LeftPane = styled.div`
   display:inline-flex;
@@ -101,7 +102,6 @@ class App extends React.Component {
       servings: 1,
       allIntake: [],
       todayIntake: [],
-      daytotal: 0,
       recommended: 2000,
       selectedId: 0,
       mmeal: '',
@@ -110,6 +110,8 @@ class App extends React.Component {
       mservings: 0,
       mtotalcal: 0,
       mdayte: '',
+      todayTotal: 0,
+      allTimeTotal: 0
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmission = this.handleFormSubmission.bind(this);
@@ -141,6 +143,7 @@ class App extends React.Component {
     const modifiedTotal = currentTotal.filter((item) => item.id !== id);
     const modifiedDaily = currentDaily.filter((item) => item.id !== id);
     const total = getTotalIntake(modifiedDaily);
+    const allTotal = getTotalIntake(modifiedTotal)
     $.ajax({
       url: 'http://localhost:3010/api/cal',
       method: 'DELETE',
@@ -151,6 +154,7 @@ class App extends React.Component {
           allIntake: modifiedTotal,
           todayIntake: modifiedDaily,
           todayTotal: total,
+          allTimeTotal: allTotal,
         });
       },
     });
@@ -174,11 +178,12 @@ class App extends React.Component {
         const todayDate = new Date().toDateInputValue();
         const todayTotal = result.filter((item) => item.dayte === todayDate);
         const total = getTotalIntake(todayTotal);
-        console.log(total);
+        const allTotal = getTotalIntake(newTotal);
         that.setState({
           allIntake: newTotal,
           todayIntake: todayTotal,
           todayTotal: total,
+          allTimeTotal: allTotal
         });
       },
     });
@@ -198,6 +203,8 @@ class App extends React.Component {
       cal,
       servings,
     };
+    calObj.cal = Number(calObj.cal);
+    calObj.servings = Number(calObj.servings);
     calObj.totalcal = (calObj.cal * calObj.servings);
     const that = this;
     const currentDate = new Date().toDateInputValue();
@@ -209,23 +216,25 @@ class App extends React.Component {
       data: JSON.stringify(calObj),
       contentType: 'application/json',
       success(result) {
+        console.log('ressssult', result);
+        calObj.id = result[0].id;
         if (calObj.dayte === currentDate) {
           todaysCopy.push(calObj);
           const total = getTotalIntake(todaysCopy);
-          console.log(total);
           that.setState({
             todayIntake: todaysCopy,
             view: 'today',
             todayTotal: total,
           });
         } else {
+          calObj.id = result.id;
+          console.log('heeere',calObj)
           totalCopy.push(calObj);
           const total = getTotalIntake(totalCopy);
-          console.log(total);
           that.setState({
             allIntake: totalCopy,
             view: 'today',
-            todayTotal: total,
+            allTimeTotal: total,
           });
         }
       },
@@ -294,7 +303,6 @@ class App extends React.Component {
     const servings = Number(e.target.dataset.servings);
     const totalcal = Number(e.target.dataset.totalcal);
     const { dayte } = e.target.dataset;
-    // cal,servings,totalcal,dayte)
     this.setState({
       view: 'put',
       mmeal: meal,
@@ -315,11 +323,10 @@ class App extends React.Component {
         </MainWrapper>
       );
     }
-    if (this.state.view === 'today') {
+    else if (this.state.view === 'month'){
       return (
         <MainWrapper>
           <div />
-
           <LeftPane>
             <ViewContainer>
               <h2>View Select</h2>
@@ -334,20 +341,87 @@ class App extends React.Component {
               </MonthlyContainer>
             </ViewContainer>
           </LeftPane>
-
           <RightPane>
             <HeaderContent>
               <h1>Cal Tracker</h1>
-              <h1>TODAY</h1>
-              <h2>{this.state.dayte}</h2>
+              <h1>Monthly</h1>
+              <h2></h2>
             </HeaderContent>
-            <DailyList todayIntake={this.state.todayIntake} rec={this.state.recommended} remove={this.removeItem} modify={this.handleModify} state={this.state} />
 
+            <AlltimeList
+            allIntake={this.state.allIntake}
+            rec={this.state.recommended}
+            remove={this.removeItem}
+            modify={this.handleModify}
+            state={this.state} />
+            <IntakeForm
+            handleSubmit={this.handleFormSubmission}
+            handleInputChange={this.handleInputChange} />
+          </RightPane>
+        </MainWrapper>)
+    }
+    else if (this.state.view === 'week'){
+      return (
+        <MainWrapper>
+          <div />
+          <LeftPane>
+            <ViewContainer>
+              <h2>View Select</h2>
+              <DailyContainer data-name="today" onClick={this.selectView}>
+              Day
+              </DailyContainer>
+              <WeekleyContainer data-name="week" onClick={this.selectView}>
+              Week
+              </WeekleyContainer>
+              <MonthlyContainer data-name="month" onClick={this.selectView}>
+              Month
+              </MonthlyContainer>
+            </ViewContainer>
+          </LeftPane>
+          <RightPane>
+            <HeaderContent>
+              <h1>Cal Tracker</h1>
+              <h1>Weekly</h1>
+              <h2></h2>
+            </HeaderContent>
+           <AlltimeList
+            allIntake={this.state.allIntake}
+            rec={this.state.recommended}
+            remove={this.removeItem}
+            modify={this.handleModify}
+            state={this.state} />
             <IntakeForm handleSubmit={this.handleFormSubmission} handleInputChange={this.handleInputChange} />
           </RightPane>
+        </MainWrapper>)
+    }
+    else if (this.state.view === 'today') {
+      return (
+        <MainWrapper>
+          <div />
+          <LeftPane>
+            <ViewContainer>
+              <h2>View Select</h2>
+              <DailyContainer data-name="today" onClick={this.selectView}>
+              Day
+              </DailyContainer>
+              <WeekleyContainer data-name="week" onClick={this.selectView}>
+              Week
+              </WeekleyContainer>
+              <MonthlyContainer data-name="month" onClick={this.selectView}>
+              Month
+              </MonthlyContainer>
+            </ViewContainer>
+          </LeftPane>
+          <RightPane>
+            <HeaderContent>
+              <h1>Cal Tracker</h1>
+              <h2>TODAY {this.state.dayte} </h2>
 
-        </MainWrapper>
-      );
+            </HeaderContent>
+            <DailyList todayIntake={this.state.todayIntake} rec={this.state.recommended} remove={this.removeItem} modify={this.handleModify} state={this.state} />
+            <IntakeForm handleSubmit={this.handleFormSubmission} handleInputChange={this.handleInputChange} />
+          </RightPane>
+        </MainWrapper>);
     }
 
 
@@ -370,7 +444,6 @@ class App extends React.Component {
               </MonthlyContainer>
             </ViewContainer>
           </LeftPane>
-
           <RightPane>
             <HeaderContent>
               <h1>Cal Tracker</h1>
@@ -378,10 +451,8 @@ class App extends React.Component {
               <h2>{this.state.dayte}</h2>
             </HeaderContent>
             <DailyList todayIntake={this.state.todayIntake} rec={this.state.recommended} remove={this.removeItem} modify={this.handleModify} state={this.state} />
-
             <IntakeForm handleSubmit={this.handleFormSubmission} handleInputChange={this.handleInputChange} />
           </RightPane>
-
         </MainWrapper>
       );
     }

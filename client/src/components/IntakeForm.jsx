@@ -1,7 +1,6 @@
 import React from  'react';
 import DatePicker from "react-datepicker";
 import dateToday from '../helpers/dateHelper.js'
-// console.log(typeof new Date().toDateInputValue())
 import styled from 'styled-components';
 
 const FormContainer = styled.div`
@@ -13,7 +12,6 @@ const FormContainer = styled.div`
   border:solid 1px black;
   width:30%;
   border-radius:20px;
-
 `;
 const StyledP = styled.p`
   text-align:left;
@@ -52,8 +50,7 @@ const IntakeForm = ({handleInputChange, handleSubmit}) => (
     <Sh1> Add an item </Sh1>
     <label>
       <StyledP>date</StyledP>
-    <input type="dayte" name="date"
-    value={new Date().toDateInputValue()}
+    <input type="date" name="dayte"
     />
     </label>
     <label>
@@ -79,7 +76,6 @@ const IntakeForm = ({handleInputChange, handleSubmit}) => (
 
   <br></br>
   <Submitter type="submit" value="Submit" />
-  {/* <input type="submit" value="Submit" /> */}
   </InForm>
 
   </FormContainer>

@@ -69,7 +69,6 @@ const DailyList = ({todayIntake, remove, modify, state}) => {
         <div>
          <SP> Daily Recommended:{state.recommended}</SP>
         </div>
-
            <SP>
              Net:
              <GreenDiv>-{Math.abs(state.recommended- state.todayTotal)}
@@ -94,8 +93,6 @@ const DailyList = ({todayIntake, remove, modify, state}) => {
   )}
 
   else {
-    {console.log('recommended', state.recommended)}
-      {console.log('todaytota', state.todayTotal)}
     return (<DailyListContainer>
       <Header>
         <div>

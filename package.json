@@ -1,0 +1,54 @@
+{
+  "name": "cal-cruncher",
+  "version": "1.0.0",
+  "description": "Caloric deficit tracker/ planner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server-dev": "nodemon server/server.js",
+    "react-build": "webpack -d --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmcphillips/Cal-Cruncher.git"
+  },
+  "author": "Matthew McPhillips",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmcphillips/Cal-Cruncher/issues"
+  },
+  "homepage": "https://github.com/mmcphillips/Cal-Cruncher#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.6",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "flexbox-react": "^4.4.0",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "nodemon": "^1.19.1",
+    "pg": "^7.12.1",
+    "pg-promise": "^9.0.0",
+    "react": "^16.9.0",
+    "react-datepicker": "^2.8.0",
+    "react-dom": "^16.9.0",
+    "style-loader": "^1.0.0",
+    "styled-components": "^4.3.2",
+    "styled-flex-component": "^3.0.0",
+    "webpack": "^4.39.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "webpack-cli": "^3.3.6"
+  }
+}

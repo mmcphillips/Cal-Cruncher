@@ -35,12 +35,14 @@ app.post('/api/cal', (request, response) => {
     cal,
     servings,
     totalcal
-  ) VALUES($1,$2,$3,$4,$5)`;
+  ) VALUES($1,$2,$3,$4,$5) Returning id`;
   pool.query(insertQuery, params, (error, results) => {
     if (error) {
+      console.log(results, 'errortttttttttttttttttttttttttttttttttttttttttttttttttttt')
       response.status(422).end();
     } else {
-      response.status(201).json(results.rows).end();
+      console.log(results)
+      response.status(200).json(results.rows).end();
     }
   });
 });
@@ -70,17 +72,15 @@ app.put('/api/cal', (request, response) => {
 
 
 app.delete('/api/cal', (request, response) => {
-  // console.log(request);
-  console.log(request.body);
   const { id } = request.body;
-  console.log(id);
   const deleteQuery = 'DELETE FROM foodlog WHERE id = $1;';
   pool.query(deleteQuery, [id], (error, results) => {
     if (error) {
       console.log(error);
       response.status(400).end();
     }
-    response.send(`Deletion successful at ${id}`).status(405).end();
+    console.log(results);
+    response.send(results).status(405).end();
   });
 });
 module.exports = app;

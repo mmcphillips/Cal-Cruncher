@@ -50,7 +50,7 @@ const IntakeForm = ({handleInputChange, handleSubmit}) => (
     <Sh1> Add an item </Sh1>
     <label>
       <StyledP>date</StyledP>
-    <input type="date" name="dayte"
+    <input type="date" name="dayte" required
     />
     </label>
     <label>

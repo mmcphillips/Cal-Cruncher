@@ -121,7 +121,6 @@ const DailyList = ({todayIntake, remove, modify, state}) => {
     </Tb>
   </DailyListContainer>)
   }
-
 }
 
 

@@ -145,7 +145,7 @@ class App extends React.Component {
     const total = getTotalIntake(modifiedDaily);
     const allTotal = getTotalIntake(modifiedTotal)
     $.ajax({
-      url: 'http://localhost:3010/api/cal',
+      url: '/api/cal',
       method: 'DELETE',
       contentType: 'application/json',
       data: JSON.stringify(delObj),
@@ -171,7 +171,7 @@ class App extends React.Component {
       return sum;
     };
     $.ajax({
-      url: 'http://localhost:3010/api/cal',
+      url: '/api/cal',
       method: 'GET',
       success(result) {
         const newTotal = shallowCopy.concat(result);
@@ -211,7 +211,7 @@ class App extends React.Component {
     const totalCopy = this.state.allIntake.slice();
     const todaysCopy = this.state.todayIntake.slice();
     $.ajax({
-      url: 'http://localhost:3010/api/cal',
+      url: '/api/cal',
       method: 'POST',
       data: JSON.stringify(calObj),
       contentType: 'application/json',
@@ -276,7 +276,7 @@ class App extends React.Component {
     filteredToday.push(calObj);
     filteredTotal.push(calObj);
     $.ajax({
-      url: 'http://localhost:3010/api/cal',
+      url: '/api/cal',
       method: 'PUT',
       data: JSON.stringify(calObj),
       contentType: 'application/json',
